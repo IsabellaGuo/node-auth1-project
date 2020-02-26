@@ -10,6 +10,7 @@ const router = express.Router()
 
 // endpoints
 router.get('/', (req, res) => {
+    console.log("This is the req.session:", req.session)
     Users.find()
     .then((users) => {
         res.status(200).json(users)

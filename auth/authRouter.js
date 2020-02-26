@@ -21,6 +21,8 @@ router.post('/register', (req, res) => {
     Users.add(user)
         .then((newUser) => {
             res.status(201).json({message:"Registered"})
+            
+            req.session.loggedIn = true
         })
         .catch((error) => {
             res.status(500).json({ error })
@@ -36,6 +38,10 @@ router.post('/login', (req, res) => {
         .first()
         .then((user) => {
             if (user && bcrypt.compareSync(password, user.password)) {
+                //Add session
+                req.session.loggedIn = true;
+                req.session.username = user.username;
+
                 res.status(200).json({ message:"Logged In" })
             } else {
                 res.status(401).json({ message:'Invalid credentials' })
